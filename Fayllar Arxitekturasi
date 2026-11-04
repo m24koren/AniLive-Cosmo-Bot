@@ -1,0 +1,248 @@
+Streambot/
+├── README.md
+├── .env.example
+├── .gitignore
+├── .importlinter
+├── pyproject.toml
+├── Makefile
+├── alembic.ini
+├── docker-compose.yml
+├── render.yaml
+├── requirements/
+│   ├── base.txt
+│   ├── bot.txt
+│   ├── api.txt
+│   ├── worker.txt
+│   └── dev.txt
+├── docker/
+│   ├── Dockerfile.bot
+│   ├── Dockerfile.api
+│   └── Dockerfile.worker
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── FEATURE_PARITY.md
+│   ├── SECURITY.md
+│   ├── RUNBOOK.md
+│   └── ERROR_CODES.md
+├── scripts/
+│   ├── set_webhook.py
+│   ├── seed_super_admin.py
+│   ├── backup_database.py
+│   ├── rotate_secrets.py
+│   └── check_parity.py
+│
+├── apps/
+│   ├── bot_app/
+│   │   ├── main.py
+│   │   ├── bootstrap.py
+│   │   ├── module_loader.py
+│   │   ├── dispatcher.py
+│   │   └── middlewares/
+│   │       ├── error_isolation_middleware.py
+│   │       ├── role_middleware.py
+│   │       ├── subscription_gate_middleware.py
+│   │       ├── throttle_middleware.py
+│   │       ├── i18n_middleware.py
+│   │       └── audit_middleware.py
+│   ├── api_app/
+│   │   ├── main.py
+│   │   ├── app_factory.py
+│   │   ├── router_loader.py
+│   │   ├── static_mount.py
+│   │   └── middlewares/
+│   │       ├── init_data_auth.py
+│   │       ├── rate_limiter.py
+│   │       ├── error_handler.py
+│   │       ├── security_headers.py
+│   │       ├── request_id.py
+│   │       └── cors.py
+│   └── worker_app/
+│       ├── main.py
+│       ├── scheduler.py
+│       ├── task_registry.py
+│       ├── task_runner.py
+│       └── maintenance/
+│           ├── cache_cleaner.py
+│           ├── memory_monitor.py
+│           ├── disk_monitor.py
+│           └── alert_dispatcher.py
+│
+├── shared/
+│   ├── config/
+│   │   ├── settings.py
+│   │   ├── env_loader.py
+│   │   ├── constants.py
+│   │   └── feature_flags.py
+│   ├── database/
+│   │   ├── engine.py
+│   │   ├── session.py
+│   │   ├── base_model.py
+│   │   ├── base_repository.py
+│   │   ├── unit_of_work.py
+│   │   └── migrations/
+│   │       ├── env.py
+│   │       └── versions/
+│   ├── cache/
+│   │   ├── redis_client.py
+│   │   ├── cache_keys.py
+│   │   └── distributed_lock.py
+│   ├── storage/
+│   │   ├── base_storage.py
+│   │   ├── telegram_file_storage.py
+│   │   ├── r2_storage.py
+│   │   └── s3_storage.py
+│   ├── security/
+│   │   ├── init_data_validator.py
+│   │   ├── token_signer.py
+│   │   ├── encryption.py
+│   │   ├── webhook_verifier.py
+│   │   ├── permissions.py
+│   │   └── ip_guard.py
+│   ├── errors/
+│   │   ├── base_errors.py
+│   │   ├── error_codes.py
+│   │   ├── error_boundary.py
+│   │   └── circuit_breaker.py
+│   ├── events/
+│   │   ├── event_bus.py
+│   │   ├── event_types.py
+│   │   └── outbox.py
+│   ├── contracts/
+│   │   ├── action.py
+│   │   ├── actor.py
+│   │   ├── module_manifest.py
+│   │   └── service_protocol.py
+│   ├── i18n/
+│   │   ├── translator.py
+│   │   └── locales/
+│   │       ├── uz.json
+│   │       ├── ru.json
+│   │       └── en.json
+│   ├── logging/
+│   │   ├── logger.py
+│   │   ├── alerts.py
+│   │   └── telemetry.py
+│   ├── telegram/
+│   │   ├── client.py
+│   │   ├── safe_sender.py
+│   │   └── file_id_resolver.py
+│   └── utils/
+│       ├── time_utils.py
+│       ├── validators.py
+│       ├── parsers.py
+│       ├── pagination.py
+│       └── text_utils.py
+│
+├── modules/
+│   ├── _template/
+│   ├── catalog/              # Taqvim, reyting, qidiruv filtrlari, obuna bo'lish
+│   │   ├── manifest.py
+│   │   ├── public.py
+│   │   ├── domain/
+│   │   │   ├── models.py
+│   │   │   ├── enums.py
+│   │   │   └── exceptions.py
+│   │   ├── repository.py
+│   │   ├── service.py
+│   │   ├── schemas.py
+│   │   ├── permissions.py
+│   │   ├── events.py
+│   │   ├── tasks.py
+│   │   ├── i18n/
+│   │   └── adapters/
+│   │       ├── bot/
+│   │       └── api/
+│   ├── users/
+│   ├── auth/
+│   ├── roles/                # (Yangi) Muddatli taklif havolalari, shablonlar, super admin 2-tasdig'i
+│   │   ├── role_service.py
+│   │   ├── invite_service.py
+│   │   ├── permission_guard.py
+│   │   ├── mode_switcher.py
+│   │   └── domain/models.py
+│   ├── media/                # (Yangi) Ommaviy yuklash, rejalashtirilgan chiqarish, subtitr/dublyaj
+│   │   ├── upload_service.py
+│   │   ├── bulk_upload_service.py
+│   │   ├── release_scheduler_service.py
+│   │   ├── subtitle_service.py
+│   │   ├── file_registry.py
+│   │   └── transcoding/
+│   ├── player/               # (Yangi) Ko'rishni davom ettirish, qurilmalar limiti, "Video ishlamayapti"
+│   │   ├── stream_token_service.py
+│   │   ├── stream_proxy.py
+│   │   ├── progress_tracker.py
+│   │   └── device_limit_service.py
+│   ├── search/
+│   ├── library/              # Sevimlilar, ko'rish tarixi, keyin ko'raman
+│   ├── subscriptions/        # Promo-kodlar, chegirmalar, sinov muddati
+│   ├── vip/
+│   ├── payments/             # Idempotency, chek tekshirish
+│   ├── channels/             # Majburiy obuna
+│   ├── broadcast/            # Segment va rejalashtirilgan xabarlar
+│   ├── support/              # Shablonlar, tiketni adminga biriktirish
+│   ├── moderation/           # Mualliflik huquqi shikoyatlari va ban
+│   ├── referral/
+│   ├── recommendations/
+│   ├── analytics/            # Churn, daromad, obunachilar o'sishi hisobotlari
+│   ├── audit/                # Shubhali faoliyat ogohlantirishi va audit loglar
+│   ├── settings/             # (Yangi) Texnik ishlar rejimi, feature toggle, DB backup
+│   └── system_health/
+│
+├── webapp/
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── public/
+│   └── src/
+│       ├── main.js
+│       ├── core/
+│       │   ├── telegram_sdk.js
+│       │   ├── auth_client.js
+│       │   ├── api_client.js
+│       │   ├── router.js
+│       │   ├── store.js
+│       │   ├── feature_loader.js
+│       │   ├── error_boundary.js
+│       │   ├── i18n.js
+│       │   ├── theme.js
+│       │   └── mode_switcher.js
+│       ├── shared/
+│       ├── features/
+│       │   ├── catalog/
+│       │   ├── player/
+│       │   ├── search/
+│       │   ├── library/
+│       │   ├── subscriptions/
+│       │   ├── payments/
+│       │   ├── support/
+│       │   ├── referral/
+│       │   └── profile/
+│       └── admin/            # Admin paneli (Ommaviy yuklash, rejalashtirish, audit, sozlamalar)
+│           ├── admin_shell/
+│           └── pages/
+│               ├── dashboard/
+│               ├── content/          # Ommaviy yuklash va rejalashtirilgan chiqarish
+│               ├── media_upload/
+│               ├── plans/
+│               ├── payments/
+│               ├── users/
+│               ├── roles/            # Rol shablonlari va vaqtinchalik takliflar
+│               ├── channels/
+│               ├── broadcast/
+│               ├── support/
+│               ├── moderation/
+│               ├── settings/         # Texnik ishlar rejimi va DB backup
+│               ├── audit_log/
+│               └── system_health/
+│
+├── tests/
+│   ├── conftest.py
+│   ├── unit/
+│   ├── integration/
+│   ├── contract/
+│   ├── parity/
+│   ├── isolation/
+│   ├── security/
+│   ├── e2e/
+│   ├── load/
+│   └── mocks/
