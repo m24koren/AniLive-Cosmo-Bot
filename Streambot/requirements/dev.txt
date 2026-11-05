@@ -1,1 +1,10 @@
-dev.txt
+-r api.txt
+-r worker.txt
+
+# --- Testlar ---
+pytest>=8
+pytest-asyncio>=0.23
+
+# --- Kod sifati (make lint) ---
+ruff>=0.4
+import-linter>=2.0
