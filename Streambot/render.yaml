@@ -1,1 +1,77 @@
-render.yaml
+services:
+  # --- API + Telegram webhook + Web App + fon vazifalari ---
+  - type: web
+    name: streambot-api
+    runtime: docker
+    dockerfilePath: ./docker/Dockerfile.api
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DEFAULT_LANG
+        value: uz
+      - key: BOT_MODE
+        value: webhook
+      - key: AUTO_MIGRATE
+        value: "true"
+      - key: WORKER_EMBEDDED
+        value: "true"
+      - key: SUPER_ADMIN_IDS
+        value: "8869400604"
+      - key: BOT_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEBHOOK_SECRET
+        generateValue: true
+      - key: BASE_URL
+        value: ""
+      - key: WEBAPP_URL
+        value: ""
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: streambot-redis
+          property: connectionString
+      - key: STORAGE_BACKEND
+        value: telegram
+      - key: KEEPALIVE_URL
+        sync: false
+      - key: KEEPALIVE_INTERVAL_SECONDS
+        value: "480"
+      - key: MEMORY_WARN_PERCENT
+        value: "85"
+      - key: MEMORY_CRIT_PERCENT
+        value: "90"
+      - key: DISK_WARN_PERCENT
+        value: "85"
+      - key: DISK_CRIT_PERCENT
+        value: "90"
+
+  # --- Uxlab qolmaslik: har 10 daqiqada /health ni chaqiradi ---
+  - type: cron
+    name: streambot-keepalive
+    runtime: python
+    plan: starter
+    schedule: "*/10 * * * *"
+    buildCommand: "true"
+    startCommand: python -c "import os,urllib.request as u; u.urlopen(os.environ['KEEPALIVE_URL'], timeout=20)"
+    envVars:
+      - key: KEEPALIVE_URL
+        sync: false
+
+  # --- Redis (kesh, lock, throttle) ---
+  - type: keyvalue
+    name: streambot-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
