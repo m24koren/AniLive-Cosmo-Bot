@@ -1,1 +1,39 @@
-.gitignore
+# --- Sirlar (hech qachon GitHub'ga yuklanmasin) ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- Build va tayyor fayllar ---
+dist/
+build/
+webapp/dist/
+
+# --- Node (Web App) ---
+node_modules/
+npm-debug.log*
+
+# --- Lokal baza, zaxira va loglar ---
+*.db
+*.sqlite3
+backups/
+*.log
+tmp/
+
+# --- Muharrir va tizim fayllari ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
