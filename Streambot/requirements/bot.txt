@@ -1,1 +1,4 @@
-bot.txt
+-r base.txt
+
+# --- Telegram bot ---
+aiogram>=3.4,<4
