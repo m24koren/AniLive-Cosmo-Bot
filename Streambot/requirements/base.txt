@@ -1,1 +1,27 @@
-base.txt
+# Umumiy kutubxonalar (bot, api va worker uchun)
+
+# --- Sozlamalar va validatsiya ---
+pydantic>=2.6,<3
+pydantic-settings>=2.2,<3
+
+# --- Baza (PostgreSQL) va migratsiya ---
+SQLAlchemy[asyncio]>=2.0,<2.1
+asyncpg>=0.29
+psycopg2-binary>=2.9
+alembic>=1.13,<2
+
+# --- Kesh va lock ---
+redis>=5.0,<6
+
+# --- Xavfsizlik ---
+cryptography>=42
+
+# --- HTTP va tezkor JSON ---
+httpx>=0.27,<1
+orjson>=3.9
+
+# --- Fayl saqlash (Cloudflare R2 / S3) ---
+boto3>=1.34
+
+# --- Tizim monitoringi (xotira va disk) ---
+psutil>=5.9
