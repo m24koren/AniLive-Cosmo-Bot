@@ -1,1 +1,37 @@
-.importlinter
+# Arxitektura qoidalarini avtomatik tekshiradi:   pip install import-linter && lint-imports
+# Maqsad: bitta modul buzilsa yoki o'zgarsa, boshqa modullarga ta'sir qilmasin.
+
+[importlinter]
+root_packages =
+    apps
+    shared
+    modules
+include_external_packages = False
+
+# 1) shared — poydevor: modules va apps ni import qilmaydi
+#    (ruxsat etilgan istisnolar: modellarni topish va yuklangan modullar ro'yxati)
+[importlinter:contract:shared-poydevor]
+name = shared (poydevor) modules va apps ga bog'lanmasin
+type = forbidden
+source_modules =
+    shared
+forbidden_modules =
+    modules
+    apps
+ignore_imports =
+    shared.database.models_registry -> modules
+    shared.telegram.modules_state -> apps.bot_app.dispatcher
+unmatched_ignore_imports_alerting = none
+
+# 2) modullar mustaqil: bir modul boshqasining ichki fayllarini (service, repository,
+#    domain, adapters...) import qilmaydi. Faqat `public.py` orqali murojaat qilinadi.
+#    `modules.*` yangi qo'shilgan modullarni ham avtomatik qamrab oladi.
+[importlinter:contract:modullar-mustaqil]
+name = modullar bir-birining ichki fayllariga kirmasin (faqat public.py orqali)
+type = independence
+modules =
+    modules.*
+ignore_imports =
+    modules.** -> modules.*.public
+    apps.** -> modules.*.public
+unmatched_ignore_imports_alerting = none
