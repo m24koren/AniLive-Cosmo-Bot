@@ -1,1 +1,28 @@
-pyproject.toml
+[project]
+name = "streambot"
+version = "0.1.0"
+description = "Telegram Media Studiosi: bot + Mini App + admin paneli"
+requires-python = ">=3.11"
+
+# --- Kod sifati (make lint) ---
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "UP"]
+ignore = [
+    "B008",   # FastAPI: Depends(...) funksiya argumentida ishlatiladi
+    "B905",   # zip(strict=...) majburiy emas
+    "UP017",  # datetime.timezone.utc ham to'g'ri
+    "UP037",  # `from __future__ import annotations` bilan qo'shtirnoqli annotatsiya zarari yo'q
+    "UP041",
+    "UP042",  # (str, Enum) ishlatamiz: SQLAlchemy va JSON bilan oson ishlaydi
+    "E731",
+]
+
+# --- Testlar (make test) ---
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
